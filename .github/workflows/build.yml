@@ -35,14 +35,17 @@ jobs:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
         run: |
-          go build -o count-token-${{ matrix.goos }}-${{ matrix.goarch }} count-token.go
+          go build -o count-token count-token.go
+
+      - name: Create Archive
+        run: |
+          zip count-token-${{ matrix.goos }}-${{ matrix.goarch }}.zip count-token
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            count-token-linux-amd64
-            count-token-darwin-arm64
+            count-token-*.zip
           tag_name: v1.0.0
           name: Release v1.0.0
           draft: false
